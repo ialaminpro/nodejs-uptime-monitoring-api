@@ -11,6 +11,18 @@
 const http = require('http');
 const { handleReqRes } = require('./helpers/handleReqRes');
 const environment = require('./helpers/environments');
+const data = require('./lib/data');
+
+// testing file system
+// TODO: Should to Remove it.
+
+data.create('test', 'NewFile', { name: 'Bangladesh', language: 'Bangla' }, (err) => {
+    console.log(`error was`, err);
+});
+
+data.read('test', 'NewFile', (err, result) => {
+    console.log(err, result);
+});
 
 // app object - module scaffolding
 const app = {};

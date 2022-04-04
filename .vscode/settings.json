@@ -10,10 +10,8 @@
     "source.fixAll.eslint": true,
     "source.organizeImports": true
   },
-  "eslint.alwaysShowStatus": true,
+  "eslint.alwaysShowStatus": true
   // "eslint.workingDirectories": ["../handlers", "../helpers/"],
   // "eslint.workingDirectories": [{ "pattern": "./*" }],
   // "eslint.workingDirectories": [{ "mode": "auto" }]
-  
-},
-
+}

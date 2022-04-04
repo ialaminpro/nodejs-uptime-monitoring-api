@@ -1,16 +1,17 @@
-/**
- * Title: Uptime Monitoring Application
- * Description: A RESTful  API to monitor up or down time of user defined links
- * Author: Al Amin
- * Date: 04/05/2022
- *
- */
+/**------------------------------------------------------------------------
+ * @Title          :  Uptime Monitoring Application
+ * @author         :  Al Amin
+ * @email          :  ialamin.pro@gmail.com
+ * @repo           :  https://github.com/ialaminpro/uptime-monitoring-application
+ * @createdOn      :  05/04/2022
+ * @description    :  A RESTful  API to monitor up or down time of user defined links
+ *------------------------------------------------------------------------* */
 
 // dependencies
 const http = require('http');
 const { handleReqRes } = require('./helpers/handleReqRes');
 
-// app object -  module scaffolding
+// app object - module scaffolding
 const app = {};
 
 // configuration

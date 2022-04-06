@@ -11,17 +11,21 @@
 const http = require('http');
 const { handleReqRes } = require('./helpers/handleReqRes');
 const environment = require('./helpers/environments');
-const data = require('./lib/data');
+const data = require('./lib/filehandle');
 
 // testing file system
 // TODO: Should to Remove it.
 
-data.create('test', 'NewFile', { name: 'Bangladesh', language: 'Bangla' }, (err) => {
+data.create('./', 'data', { name: 'Bangladesh', language: 'Bangla' }, (err) => {
     console.log(`error was`, err);
 });
 
-data.read('test', 'NewFile', (err, result) => {
+data.read('./', 'data', (err, result) => {
     console.log(err, result);
+});
+
+data.update('./', 'data', { name: 'USA', language: 'English' }, (err) => {
+    console.log(`error was`, err);
 });
 
 // app object - module scaffolding

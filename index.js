@@ -16,15 +16,23 @@ const data = require('./lib/filehandle');
 // testing file system
 // TODO: Should to Remove it.
 
+// create file
 data.create('./', 'data', { name: 'Bangladesh', language: 'Bangla' }, (err) => {
     console.log(`error was`, err);
 });
 
+// read file
 data.read('./', 'data', (err, result) => {
     console.log(err, result);
 });
 
+// update file
 data.update('./', 'data', { name: 'USA', language: 'English' }, (err) => {
+    console.log(`error was`, err);
+});
+
+// delete file
+data.delete('./', 'data', (err) => {
     console.log(`error was`, err);
 });
 

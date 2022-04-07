@@ -25,10 +25,8 @@ handler.userHandler = (requestProperties, callback) => {
     }
 };
 
-// eslint-disable-next-line no-underscore-dangle
 handler._users = {};
 
-// eslint-disable-next-line no-underscore-dangle
 handler._users.post = (requestProperties, callback) => {
     const firstName =
         typeof requestProperties.body.firstName === 'string' &&
@@ -94,7 +92,6 @@ handler._users.post = (requestProperties, callback) => {
     }
 };
 
-// eslint-disable-next-line no-underscore-dangle
 handler._users.get = (requestProperties, callback) => {
     // check the phone number if valid
     const phone =
@@ -127,7 +124,6 @@ handler._users.get = (requestProperties, callback) => {
     }
 };
 
-// eslint-disable-next-line no-underscore-dangle
 handler._users.put = (requestProperties, callback) => {
     const firstName =
         typeof requestProperties.body.firstName === 'string' &&
@@ -199,7 +195,6 @@ handler._users.put = (requestProperties, callback) => {
     }
 };
 
-// eslint-disable-next-line no-underscore-dangle
 handler._users.delete = (requestProperties, callback) => {
     // check the phone number if valid
     const phone =

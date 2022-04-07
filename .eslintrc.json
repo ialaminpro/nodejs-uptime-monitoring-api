@@ -20,5 +20,6 @@
       }
     ]
   },
-  "plugins": ["prettier"]
+  "plugins": ["prettier"],
+  "allowFunctionParams": false
 }

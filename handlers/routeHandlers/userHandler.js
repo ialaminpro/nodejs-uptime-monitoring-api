@@ -10,20 +10,25 @@
 // dependencies
 const data = require('../../lib/fileHandle');
 const { hash } = require('../../helpers/utilities');
+const { parseJSON } = require('../../helpers/utilities');
+
 // module scaffolding
 const handler = {};
 
 handler.userHandler = (requestProperties, callback) => {
     const acceptedMethods = ['get', 'post', 'put', 'delete'];
     if (acceptedMethods.indexOf(requestProperties.method) > -1) {
+        // eslint-disable-next-line no-underscore-dangle
         handler._users[requestProperties.method](requestProperties, callback);
     } else {
         callback(405);
     }
 };
 
+// eslint-disable-next-line no-underscore-dangle
 handler._users = {};
 
+// eslint-disable-next-line no-underscore-dangle
 handler._users.post = (requestProperties, callback) => {
     const firstName =
         typeof requestProperties.body.firstName === 'string' &&
@@ -38,7 +43,7 @@ handler._users.post = (requestProperties, callback) => {
             : false;
     const phone =
         typeof requestProperties.body.phone === 'string' &&
-        requestProperties.body.phone.trim().length >= 11
+        requestProperties.body.phone.trim().length === 11
             ? requestProperties.body.phone
             : false;
 
@@ -89,12 +94,43 @@ handler._users.post = (requestProperties, callback) => {
     }
 };
 
+// eslint-disable-next-line no-underscore-dangle
 handler._users.get = (requestProperties, callback) => {
-    callback(200);
+    // check the phone number if valid
+    const phone =
+        typeof requestProperties.queryStringObject.phone === 'string' &&
+        requestProperties.queryStringObject.phone.trim().length === 11
+            ? requestProperties.queryStringObject.phone
+            : false;
+
+    if (phone) {
+        // lookup the user
+        data.read('users', phone, (err, u) => {
+            /**
+             * {firstName: 'Al', lastName: 'Amin, phone: '01730716580', 'tosAgreement: true}
+             */
+            const user = { ...parseJSON(u) };
+
+            if (!err && user) {
+                delete user.password;
+                callback(200, user);
+            } else {
+                callback(404, {
+                    error: 'Requested user not found!',
+                });
+            }
+        });
+    } else {
+        callback(404, {
+            error: 'Requested user not found!',
+        });
+    }
 };
 
+// eslint-disable-next-line no-underscore-dangle
 handler._users.put = (requestProperties, callback) => {};
 
+// eslint-disable-next-line no-underscore-dangle
 handler._users.delete = (requestProperties, callback) => {};
 
 module.exports = handler;

@@ -200,6 +200,40 @@ handler._users.put = (requestProperties, callback) => {
 };
 
 // eslint-disable-next-line no-underscore-dangle
-handler._users.delete = (requestProperties, callback) => {};
+handler._users.delete = (requestProperties, callback) => {
+    // check the phone number if valid
+    const phone =
+        typeof requestProperties.queryStringObject.phone === 'string' &&
+        requestProperties.queryStringObject.phone.trim().length === 11
+            ? requestProperties.queryStringObject.phone
+            : false;
+
+    if (phone) {
+        // lookup the user
+        data.read('users', phone, (err, userData) => {
+            if (!err && userData) {
+                data.delete('users', phone, (error) => {
+                    if (!error) {
+                        callback(200, {
+                            message: 'User was successfully deleted!',
+                        });
+                    } else {
+                        callback(500, {
+                            error: 'There was a server side error!',
+                        });
+                    }
+                });
+            } else {
+                callback(500, {
+                    error: 'There was a server side error!',
+                });
+            }
+        });
+    } else {
+        callback(400, {
+            error: 'There was a problem in your request!',
+        });
+    }
+};
 
 module.exports = handler;

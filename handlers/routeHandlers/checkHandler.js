@@ -144,7 +144,7 @@ handler._check.get = (requestProperties, callback) => {
                     }
                 });
             } else {
-                callback(500, {
+                callback(400, {
                     error: 'You have a problem in your request',
                 });
             }
@@ -235,6 +235,86 @@ handler._check.put = (requestProperties, callback) => {
        
 };
 
-handler._check.delete = (requestProperties, callback) => {};
+handler._check.delete = (requestProperties, callback) => {
+    const id =
+    typeof requestProperties.queryStringObject.id === 'string' &&
+    requestProperties.queryStringObject.id.trim().length === 20
+        ? requestProperties.queryStringObject.id
+        : false;
+
+    if(id){
+        // lookup the check
+        data.read('checks', id, (err, checkData) => {
+
+            const check = { ...parseJSON(checkData) };
+
+            if (!err && check) {
+                // verify token
+                let token = typeof requestProperties.headersObject.token === 'string' ? requestProperties.headersObject.token : false;
+        
+                tokenHander._token.verify(token, check.userPhone, (tokenIsValid) => {
+                    if(tokenIsValid){
+                        // delete the check data
+                        data.delete('checks', id, (error) => {
+                            if(!error) {
+                                data.read('users', check.userPhone, (err2, userData) => {
+                                    const userObject = parseJSON(userData);
+                                    if(!err2 && userData){
+                                        let userChecks = typeof userObject.checks === 'object' && userObject.checks instanceof Array ? userObject.checks : [];
+                                        // remove  the deleted check id from user's list of checks
+                                        let checkPosition = userChecks.indexOf(id);
+                                        if(checkPosition > -1){
+                                            userChecks.splice(checkPosition, 1);
+                                            // update the user data
+                                            userObject.checks = userChecks;
+                                            data.update('users', userObject.phone, userObject, (err3) => {
+                                                if(!err3) {
+                                                    callback(200, {
+                                                        message: 'Check was successfully deleted!'
+                                                    })
+                                                }else{
+                                                    callback(500, {
+                                                        error: 'There was a problem in the server side!',
+                                                    });
+                                                }
+                                            })
+                                        }else{
+                                            callback(500, {
+                                                error: 'The check id that you are trying to remove is not found in user!',
+                                            });
+                                        }
+                                    }else{
+                                        callback(500, {
+                                            error: 'There was a problem in the server side!',
+                                        });
+                                    }
+                                })
+                            }else{
+                                callback(500, {
+                                    error: 'There was a problem in the server side!',
+                                });
+                            }
+                        });
+                    }else{
+
+                        callback(403, {
+                            error: 'Authentication problem!',
+                        });
+                    }
+                });
+            } else {
+                callback(400, {
+                    error: 'You have a problem in your request',
+                });
+            }
+        });
+    } else {
+        callback(404, {
+            error: 'Requested token was not found!',
+        });
+        
+    }
+
+};
 
 module.exports = handler;

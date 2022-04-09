@@ -11,30 +11,31 @@
 const http = require('http');
 const { handleReqRes } = require('./helpers/handleReqRes');
 const environment = require('./helpers/environments');
-const data = require('./lib/filehandle');
+// const data = require('./lib/filehandle');
+// const {sendTwillioSms} = require('./helpers/notifications');
 
-// testing file system
-// TODO: Should to Remove it.
-
+// sendTwillioSms('01730716580', 'Hello World', (err) => {
+//     console.log('This is the error false');
+// })
 // create file
-data.create('./', 'data', { name: 'Bangladesh', language: 'Bangla' }, (err) => {
-    console.log(`error was`, err);
-});
+// data.create('./', 'data', { name: 'Bangladesh', language: 'Bangla' }, (err) => {
+//     console.log(`error was`, err);
+// });
 
 // read file
-data.read('./', 'data', (err, result) => {
-    console.log(err, result);
-});
+// data.read('./', 'data', (err, result) => {
+//     console.log(err, result);
+// });
 
 // update file
-data.update('./', 'data', { name: 'USA', language: 'English' }, (err) => {
-    console.log(`error was`, err);
-});
+// data.update('./', 'data', { name: 'USA', language: 'English' }, (err) => {
+//     console.log(`error was`, err);
+// });
 
 // delete file
-data.delete('./', 'data', (err) => {
-    console.log(`error was`, err);
-});
+// data.delete('./', 'data', (err) => {
+//     console.log(`error was`, err);
+// });
 
 // app object - module scaffolding
 const app = {};

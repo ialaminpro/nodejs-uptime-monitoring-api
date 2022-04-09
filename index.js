@@ -1,30 +1,27 @@
 /**------------------------------------------------------------------------
- * @Title          :  Uptime Monitoring Application
+ * @Title          :  Project initial file
  * @author         :  Al Amin
  * @email          :  ialamin.pro@gmail.com
  * @repo           :  https://github.com/ialaminpro/uptime-monitoring-application
  * @createdOn      :  05/04/2022
- * @description    :  A RESTful  API to monitor up or down time of user defined links
+ * @description    :  Initial file to start the node server and workers
  *------------------------------------------------------------------------* */
 
 // dependencies
-const http = require('http');
-const { handleReqRes } = require('./helpers/handleReqRes');
-const environment = require('./helpers/environments');
+const server  = require('./lib/server');
+const workers  = require('./lib/worker');
 
 // app object - module scaffolding
 const app = {};
 
-// create server
-app.createServer = () => {
-    const server = http.createServer(app.handleReqRes);
-    server.listen(environment.port, () => {
-        console.log(`listening to port ${environment.port}`);
-    });
-};
+app.init = () => {
+    // start the server
+    server.init();
 
-// handle Request Response
-app.handleReqRes = handleReqRes;
+    // start the workers
+    workers.init();
+}
 
-// start the server
-app.createServer();
+app.init();
+
+module.exports = app;

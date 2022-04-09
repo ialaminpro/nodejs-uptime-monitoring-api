@@ -149,7 +149,39 @@ handler._token.put = (requestProperties, callback) => {
 };
 
 handler._token.delete = (requestProperties, callback) => {
+    // check the token if valid
+    const id =
+    typeof requestProperties.queryStringObject.id === 'string' &&
+    requestProperties.queryStringObject.id.trim().length === 20
+        ? requestProperties.queryStringObject.id
+        : false;
 
+    if (id) {
+        // lookup the token
+        data.read('tokens', id, (err, tokenData) => {
+            if (!err && tokenData) {
+                data.delete('tokens', id, (error) => {
+                    if (!error) {
+                        callback(200, {
+                            message: 'Token was successfully deleted!',
+                        });
+                    } else {
+                        callback(500, {
+                            error: 'There was a server side error!',
+                        });
+                    }
+                });
+            } else {
+                callback(500, {
+                    error: 'There was a server side error!',
+                });
+            }
+        });
+        } else {
+        callback(400, {
+            error: 'There was a problem in your request!',
+        });
+    }
 };
 
 module.exports = handler;

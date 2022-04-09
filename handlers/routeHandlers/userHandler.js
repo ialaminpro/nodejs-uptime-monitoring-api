@@ -18,7 +18,6 @@ const handler = {};
 handler.userHandler = (requestProperties, callback) => {
     const acceptedMethods = ['get', 'post', 'put', 'delete'];
     if (acceptedMethods.indexOf(requestProperties.method) > -1) {
-        // eslint-disable-next-line no-underscore-dangle
         handler._users[requestProperties.method](requestProperties, callback);
     } else {
         callback(405);
